@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {TextField, styled, Box, FormControl, FilledInput, InputLabel, InputAdornment, IconButton, Button, Typography} from '@mui/material'
 import {Visibility, VisibilityOff} from '@mui/icons-material'
+import { grey } from '@mui/material/colors';
 import BackgroundImage from '../../images/login_bg.png'
 import Logo from '../../images/inchat_logo.png'
 import ChattingImageGIF from '../../images/Chatting.gif'
@@ -12,8 +13,6 @@ const RightContainer = styled(Box)`
   flex-direction : column;
   gap : 1rem;
   grid-area : right;
-  // position : absolute;
-  // width : 50%;
 `
 const Container = styled(Box)`
  height : 100vh;
@@ -28,7 +27,7 @@ const FormContainer = styled(Box)`
   width : 1000px;
   display: grid;
   position : relative;
-  background-color : #fff;
+  background-color : #040404;
   border-radius : 20px;
   grid-template-areas : 
     'logo logo'
@@ -47,8 +46,8 @@ const Header = styled(Box)`
   height : 90px;
 `
 const HeaderImage = styled('img')({
-  marginLeft:'36%',
-  height: 80,
+  marginLeft:'35%',
+  height: 120,
   position:'absolute'
 })
 
@@ -56,49 +55,83 @@ const ChattingImage = styled('img')`
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -20px;
+  margin-top: -80px;
   transform: scale(1.5);
   object-fit: cover;
 `
 
 const PasswordInput = styled(FormControl)({
-  "& .MuiFilledInput-root:after" : {
-    borderBottomColor : "#040404"
-  }, 
-  "& .Mui-focused":{
-    color : "#040404", 
-    borderColor : "#040404"
-  },
   "& label.Mui-focused" : {
-    color : "#040404"
+    color : "#424242"
+  },
+  "& label":{
+    color : "#424242"
+  },
+  "& .MuiFilledInput-root" :{
+    backgroundColor:"#111111",
+    color : "#fff"
+  },
+  "& .MuiFilledInput-root.Mui-focused ":{
+    backgroundColor : "#111111"
+  },
+  "& .MuiFilledInput-root:hover" : {
+    backgroundColor : "#111111", 
+    borderBottomColor: "#fff"
+  },
+  "& .MuiFilledInput-root:after" : {
+    borderBottomColor : "#fff",
+  }, 
+  "& .MuiTouchRipple-root":{
+    color : "#fff"
   }
+  // "& .Mui-focused":{
+  //   color : "#040404", 
+  //   borderColor : "#040404",
+  //   background : "#fff"
+  // },
 })
 
 const StyledTextField = styled(TextField)({
-  "& label.Mui-focused": {
-    color: "#040404"
+  "& label, label.Mui-focused": {
+    color: "#424242"
+  },
+  // "& label":{
+  //   color : "#424242"
+  // },
+  "& .MuiFilledInput-root" :{
+    backgroundColor:"#111111",
+    color : "#fff"
+  },
+  "& .MuiFilledInput-root.Mui-focused ":{
+    backgroundColor : "#111111"
+  },
+  "& .MuiFilledInput-root:hover" : {
+    backgroundColor : "#111111", 
+    borderBottomColor: "#fff"
+  },
+  "& .MuiFilledInput-root:after" : {
+    borderBottomColor:"#fff"
   },
   // "& .MuiInput-underline:after": {
   //   borderBottomColor: "#040404"
   // },
-  "& .MuiFilledInput-root:after" : {
-    borderBottomColor:"#040404"
-  },
-  "& .MuiInput-underline": {
-    borderBottomColor: "#040404"
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#040404"
-    },
-    "&:hover fieldset": {
-      borderColor: "#040404",
-      borderWidth: 2
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#040404"
-    }
-  }
+  // "& .MuiInput-underline": {
+  //   borderBottomColor: "#474747"
+  // },
+  // "& .MuiFilledInput-root ": {
+  //   "& fieldset": {
+  //     borderColor: "#040404"
+  //   },
+  //   "&:hover fieldset": {
+  //     borderColor: "#111111",
+  //     // backgroundColor : "#111111",
+  //     // color : "f1f1f1",
+  //     borderWidth: 8
+  //   },
+  //   "&.Mui-focused fieldset": {
+  //     borderColor: "#111111"
+  //   }
+  // }
 });
 
 function Login() {
@@ -107,8 +140,6 @@ function Login() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
-// MuiInputBase-root-MuiFilledInput-root:after
-
 
   return (
     <Container style={{backgroundImage : `url(${BackgroundImage})`}}>
@@ -120,9 +151,9 @@ function Login() {
           <ChattingImage src={ChattingImageGIF} alt="illustration" />
         </LeftContainer>
         <RightContainer>
-            <StyledTextField sx={{width : 220}} variant='filled' label='Name' />
+            <StyledTextField style={{width : 220}} variant='filled' label='Name' />
             <StyledTextField style={{width : 220}} variant='filled' type='email' label='Email Address' />
-            <PasswordInput fullWidth sx={{ m: 1, width: '25ch' }} variant='filled'>
+            <PasswordInput sx={{ width: '25ch' }} variant='filled'>
               <InputLabel>Password</InputLabel>
               <FilledInput
                 type={showPassword ? 'text' : 'password'}
@@ -131,13 +162,13 @@ function Login() {
                     <IconButton
                       onClick={handleClickShowPassword}
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <VisibilityOff sx={{ color: grey[800] }} /> : <Visibility sx={{ color: grey[800] }}/>}
                     </IconButton>
                   </InputAdornment>
                 }
               />
             </PasswordInput>
-            <PasswordInput style={{margin:0}} sx={{ m: 1, width: '25ch' }} variant="filled">
+            <PasswordInput sx={{ width: '25ch' }} variant="filled">
               <InputLabel>Confirm Password</InputLabel>
               <FilledInput
                 type={showConfirmPassword ? 'text' : 'password'}
@@ -146,7 +177,7 @@ function Login() {
                     <IconButton
                       onClick={handleClickShowConfirmPassword}
                     >
-                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                      {showConfirmPassword ? <VisibilityOff sx={{ color: grey[800] }} /> : <Visibility sx={{ color: grey[800] }} />}
                     </IconButton>
                   </InputAdornment>
                 }
