@@ -8,6 +8,7 @@ import ChattingImageGIF from '../../images/Chatting.gif'
 
 const RightContainer = styled(Box)`
   display: flex;
+  width : 400px;
   justify-content: center;
   align-items : center;
   flex-direction : column;
@@ -29,6 +30,12 @@ const FormContainer = styled(Box)`
   position : relative;
   background-color : #040404;
   border-radius : 20px;
+//   -webkit-box-shadow: 8px 8px 20px -3px rgba(81,85,90,1);
+// -moz-box-shadow: 8px 8px 20px -3px rgba(81,85,90,1);
+// box-shadow: 8px 8px 20px -3px rgba(81,85,90,1);
+-webkit-box-shadow: 8px 8px 20px -3px rgba(4,4,4,1);
+-moz-box-shadow: 8px 8px 20px -3px rgba(4,4,4,1);
+box-shadow: 8px 8px 20px -3px rgba(4,4,4,1);
   grid-template-areas : 
     'logo logo'
     'left right'
@@ -59,8 +66,30 @@ const ChattingImage = styled('img')`
   transform: scale(1.5);
   object-fit: cover;
 `
+const SignUpButton = styled(Button)({
+  textTransform : "none",
+  backgroundColor : "#be905e",
+  width:300,
+  height:45,
+  ":hover" :{
+    backgroundColor : "#be905e"
+  }
+})
+
+const SignInText = styled(Typography)({
+  color : "#51555a",
+  fontSize : 14,
+  " > span" :{
+    cursor : "pointer",
+    textDecorationLine : "underline",
+  },
+  " > span:hover"  :{
+    color : "#fff",
+  }
+})
 
 const PasswordInput = styled(FormControl)({
+  width:300,
   "& label.Mui-focused" : {
     color : "#424242"
   },
@@ -92,6 +121,7 @@ const PasswordInput = styled(FormControl)({
 })
 
 const StyledTextField = styled(TextField)({
+  width : 300,
   "& label, label.Mui-focused": {
     color: "#424242"
   },
@@ -151,9 +181,9 @@ function Login() {
           <ChattingImage src={ChattingImageGIF} alt="illustration" />
         </LeftContainer>
         <RightContainer>
-            <StyledTextField style={{width : 220}} variant='filled' label='Name' />
-            <StyledTextField style={{width : 220}} variant='filled' type='email' label='Email Address' />
-            <PasswordInput sx={{ width: '25ch' }} variant='filled'>
+            <StyledTextField  variant='filled' label='Name' />
+            <StyledTextField  variant='filled' type='email' label='Email Address' />
+            <PasswordInput variant='filled'>
               <InputLabel>Password</InputLabel>
               <FilledInput
                 type={showPassword ? 'text' : 'password'}
@@ -168,7 +198,7 @@ function Login() {
                 }
               />
             </PasswordInput>
-            <PasswordInput sx={{ width: '25ch' }} variant="filled">
+            <PasswordInput variant="filled">
               <InputLabel>Confirm Password</InputLabel>
               <FilledInput
                 type={showConfirmPassword ? 'text' : 'password'}
@@ -183,8 +213,8 @@ function Login() {
                 }
               />
             </PasswordInput>
-            <Button variant="contained">Sign Up</Button>
-            <Typography>Already have an account? <span>Sign In</span></Typography>            
+            <SignUpButton variant="contained">Sign Up</SignUpButton>
+            <SignInText>Already have an account? <span>Sign In</span></SignInText>            
         </RightContainer>
       </FormContainer>
     </Container>
