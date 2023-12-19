@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {TextField, styled, Box, FormControl, FilledInput, InputLabel, InputAdornment, IconButton, Button, Typography} from '@mui/material'
 import {Visibility, VisibilityOff} from '@mui/icons-material'
 import { grey } from '@mui/material/colors';
-import BackgroundImage from '../../images/login_bg.png'
+import BackgroundImage from '../../images/sun-tornado.png'
 import Logo from '../../images/inchat_logo.png'
 import ChattingImageGIF from '../../images/Chatting.gif'
 
