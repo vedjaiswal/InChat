@@ -10,11 +10,8 @@ import {
   IconButton,
   Button,
   Typography,
-  FormControlLabel,
-  Checkbox
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { grey } from "@mui/material/colors";
 
 const Container = styled(Box)`
   display: flex;
@@ -22,9 +19,10 @@ const Container = styled(Box)`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 1rem;
-  grid-area: right;
+  gap : 1rem;
+  grid-area : right;
 `;
+
 
 const SignUpButton = styled(Button)({
   textTransform: "none",
@@ -124,14 +122,16 @@ const StyledTextField = styled(TextField)({
   // }
 });
 
-function Login({ toggleLogin }) {
+function Signup({ toggleLogin }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   return (
     <Container>
-      <StyledTextField variant="filled" label="Username" />
+      <StyledTextField variant="filled" label="Name" />
+      <StyledTextField variant="filled" type="username" label="Username" />
+      <StyledTextField variant="filled" type="email" label="Email Address" />
       <PasswordInput variant="filled">
         <InputLabel>Password</InputLabel>
         <FilledInput
@@ -140,34 +140,21 @@ function Login({ toggleLogin }) {
             <InputAdornment position="end">
               <IconButton onClick={handleClickShowPassword}>
                 {showPassword ? (
-                  <VisibilityOff sx={{ color: grey[800] }} />
+                  <VisibilityOff sx={{ color: "secondary.dark" }} />
                 ) : (
-                  <Visibility sx={{ color: grey[800] }} />
+                  <Visibility sx={{ color: "secondary.dark" }} />
                 )}
               </IconButton>
             </InputAdornment>
           }
         />
       </PasswordInput>
-      <FormControlLabel
-        control={
-          <Checkbox 
-          size="small"
-          sx={{ color : "secondary.light"}}
-          // color="secondary.dark"
-          // checked={jason} 
-          // onChange={handleChange} 
-          name="remember" />
-        }
-        sx={{ color : "secondary.light", marginLeft:"-70px" }}
-        label={<Typography variant="span" style={{ fontSize : "0.5 rem" }}>Remember me for a month</Typography>}
-      />
-      <SignUpButton variant="contained">Sign In</SignUpButton>
+      <SignUpButton variant="contained">Sign Up</SignUpButton>
       <SignInText>
-        Don't have an account? <span onClick={toggleLogin} >Sign Up</span>
+        Already have an account? <span onClick={toggleLogin} >Sign In</span>
       </SignInText>
     </Container>
   );
 }
 
-export default Login;
+export default Signup;

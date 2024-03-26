@@ -1,17 +1,21 @@
-import React from 'react'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Login from './components/login/Login'
-import Chat from './components/home/Chat'
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Register from "./components/login/Register.js";
+import Chat from "./components/home/Chat";
+import { ThemeProvider } from "@emotion/react";
+import { theme } from './theme.js'
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Chat/>} ></Route>
-        <Route path="/login" element={<Login/>} ></Route>
-      </Routes>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="/" element={<Chat />}></Route>
+          <Route path="/login" element={<Register />}></Route>
+        </Routes>
+      </ThemeProvider>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
