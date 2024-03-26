@@ -33,17 +33,13 @@ const FormContainer = styled(Box)`
   position : relative;
   background-color : #040404;
   border-radius : 20px;
-//   -webkit-box-shadow: 8px 8px 20px -3px rgba(81,85,90,1);
-// -moz-box-shadow: 8px 8px 20px -3px rgba(81,85,90,1);
-// box-shadow: 8px 8px 20px -3px rgba(81,85,90,1);
 -webkit-box-shadow: 8px 8px 20px -3px rgba(4,4,4,1);
 -moz-box-shadow: 8px 8px 20px -3px rgba(4,4,4,1);
 box-shadow: 8px 8px 20px -3px rgba(4,4,4,1);
   grid-template-areas : 
     'logo logo'
     'left right'
-    'left right';
-  
+    'left right';  
 `
 
 const LeftContainer = styled(Box)`
