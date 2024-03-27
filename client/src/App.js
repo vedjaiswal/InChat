@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./components/login/Register.js";
-import Chat from "./components/home/Chat";
+import Home from "./components/home/Home";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from './theme.js'
 
@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route path="/" element={<Chat />}></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Register />}></Route>
         </Routes>
       </ThemeProvider>
