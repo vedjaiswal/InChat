@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useContext } from "react";
 import {
   TextField,
   styled,
@@ -12,6 +12,10 @@ import {
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { authenticateSignupApi } from "../../service/api.js";
+import { DataContext } from "../../context/DataProvider.js";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled(Box)`
   display: flex;
@@ -123,19 +127,57 @@ const StyledTextField = styled(TextField)({
 });
 
 function Signup({ toggleLogin }) {
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const { setToken, setEmail } = useContext(DataContext);
 
+  const [signUp, setSignUp] = useState({
+    fullname: "",
+    username: "",
+    email:"",
+    password: "",
+  });
+  
+  const onValueChange = (e) => {
+    setSignUp({ ...signUp, [e.target.name]: e.target.value });
+    console.log(signUp);
+  };
+  
+  const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  const handleSignUp = async()=>{
+    try {
+      const response = await authenticateSignupApi(signUp);
+      const auth_token = response.data.auth_token;
+      const email = signUp.email
+      
+      if(response.status === 200){
+        const userData = {
+          email,
+          auth_token  
+        }
+        Cookies.set('auth_token', JSON.stringify(userData), { expires: 1 });
+        setEmail(email);
+        setToken(auth_token)
+        navigate('/login')
+      }
+
+      console.log(response);
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Container>
-      <StyledTextField variant="filled" label="Name" />
-      <StyledTextField variant="filled" type="username" label="Username" />
-      <StyledTextField variant="filled" type="email" label="Email Address" />
+      <StyledTextField variant="filled" label="Name" name="fullname" onChange={(e)=>{onValueChange(e)}} />
+      <StyledTextField variant="filled" type="username" label="Username" name="username" onChange={(e)=>{onValueChange(e)}}/>
+      <StyledTextField variant="filled" type="email" label="Email Address" name="email" onChange={(e)=>{onValueChange(e)}} />
       <PasswordInput variant="filled">
         <InputLabel>Password</InputLabel>
         <FilledInput
           type={showPassword ? "text" : "password"}
+          name="password"
+          onChange={(e)=>{onValueChange(e)}}
           endAdornment={
             <InputAdornment position="end">
               <IconButton onClick={handleClickShowPassword}>
@@ -149,7 +191,7 @@ function Signup({ toggleLogin }) {
           }
         />
       </PasswordInput>
-      <SignUpButton variant="contained">Sign Up</SignUpButton>
+      <SignUpButton variant="contained" onClick={handleSignUp}>Sign Up</SignUpButton>
       <SignInText>
         Already have an account? <span onClick={toggleLogin} >Sign In</span>
       </SignInText>

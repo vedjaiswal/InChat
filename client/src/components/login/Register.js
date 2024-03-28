@@ -5,8 +5,8 @@ import Logo from '../../images/inchat_logo.png'
 import ChattingImageGIF from '../../images/Chatting.gif'
 
 // import components
-import Signup from './Signup'
-import Login from './Login'
+import Signup from './Signup.js'
+import Login from './Login.js'
 
 // const RightContainer = styled(Box)`
 //   display: flex;

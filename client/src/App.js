@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./components/login/Register.js";
-import Chat from "./components/home/Chat";
+import Chat from "./components/home/Chat.js";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from './theme.js'
 
