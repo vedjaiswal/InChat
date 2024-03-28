@@ -14,7 +14,6 @@ import {
   Checkbox
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { grey } from "@mui/material/colors";
 import { authenticateLoginApi } from "../../service/api.js";
 import { useNavigate } from "react-router-dom";
 import { DataContext } from "../../context/DataProvider";
@@ -30,18 +29,18 @@ const Container = styled(Box)`
   grid-area: right;
 `;
 
-const SignUpButton = styled(Button)({
+const SignUpButton = styled(Button)(({ theme })=>({
   textTransform: "none",
-  backgroundColor: "#be905e",
+  backgroundColor: theme.palette.primary.main,
   width: 300,
   height: 45,
   ":hover": {
-    backgroundColor: "#be905e",
+    backgroundColor: theme.palette.primary.main,
   },
-});
+}));
 
-const SignInText = styled(Typography)({
-  color: "#51555a",
+const SignInText = styled(Typography)(({ theme })=>({
+  color: theme.palette.secondary.main,
   fontSize: 14,
   " > span": {
     cursor: "pointer",
@@ -50,25 +49,25 @@ const SignInText = styled(Typography)({
   " > span:hover": {
     color: "#fff",
   },
-});
+}));
 
-const PasswordInput = styled(FormControl)({
+const PasswordInput = styled(FormControl)(({ theme })=>({
   width: 300,
   "& label.Mui-focused": {
-    color: "#424242",
+    color: theme.palette.secondary.light,
   },
   "& label": {
-    color: "#424242",
+    color: theme.palette.secondary.light,
   },
   "& .MuiFilledInput-root": {
-    backgroundColor: "#111111",
+    backgroundColor: theme.palette.dark,
     color: "#fff",
   },
   "& .MuiFilledInput-root.Mui-focused ": {
-    backgroundColor: "#111111",
+    backgroundColor: theme.palette.dark,
   },
   "& .MuiFilledInput-root:hover": {
-    backgroundColor: "#111111",
+    backgroundColor: theme.palette.dark,
     borderBottomColor: "#fff",
   },
   "& .MuiFilledInput-root:after": {
@@ -82,25 +81,22 @@ const PasswordInput = styled(FormControl)({
   //   borderColor : "#040404",
   //   background : "#fff"
   // },
-});
+}));
 
-const StyledTextField = styled(TextField)({
+const StyledTextField = styled(TextField)(({ theme })=>({
   width: 300,
   "& label, label.Mui-focused": {
-    color: "#424242",
+    color: theme.palette.secondary.light,
   },
-  // "& label":{
-  //   color : "#424242"
-  // },
   "& .MuiFilledInput-root": {
-    backgroundColor: "#111111",
+    backgroundColor: theme.palette.dark,
     color: "#fff",
   },
   "& .MuiFilledInput-root.Mui-focused ": {
-    backgroundColor: "#111111",
+    backgroundColor: theme.palette.dark,
   },
   "& .MuiFilledInput-root:hover": {
-    backgroundColor: "#111111",
+    backgroundColor: theme.palette.dark,
     borderBottomColor: "#fff",
   },
   "& .MuiFilledInput-root:after": {
@@ -126,7 +122,7 @@ const StyledTextField = styled(TextField)({
   //     borderColor: "#111111"
   //   }
   // }
-});
+}));
 
 function Login({ toggleLogin }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -178,9 +174,9 @@ function Login({ toggleLogin }) {
             <InputAdornment position="end">
               <IconButton onClick={handleClickShowPassword}>
                 {showPassword ? (
-                  <VisibilityOff sx={{ color: grey[800] }} />
+                  <VisibilityOff sx={{ color: "secondary.dark" }} />
                 ) : (
-                  <Visibility sx={{ color: grey[800] }} />
+                  <Visibility sx={{ color: "secondary.dark" }} />
                 )}
               </IconButton>
             </InputAdornment>
