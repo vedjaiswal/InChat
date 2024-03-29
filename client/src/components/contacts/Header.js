@@ -1,6 +1,8 @@
-import React from "react";
-import { Box, styled } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import React, {  } from "react";
+import { Box, Typography, styled} from "@mui/material";
+
+//components
+import MenuDialog from "./MenuDialog";
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -20,20 +22,25 @@ const ImageContainer = styled(Box)({
   backgroundPosition: "center",
 });
 
+const ProfileText = styled(Typography)(({ theme }) => ({
+  fontSize:"1.2rem"
+}))
+
 function Header() {
+
   return (
     <Container>
-      <div style={{display : 'flex', alignItems:'center'}}>
+      <div style={{display : 'flex', alignItems:'center', gap:10, marginLeft:15}}>
         <ImageContainer
           style={{
             backgroundImage:
               "url('https://cdn.dribbble.com/users/2987571/screenshots/7084912/luffy-01_4x.png')",
           }}
         />
-        luffytaro
+        <ProfileText>luffytaro</ProfileText>
       </div>
-      <div>
-        <MenuIcon />
+      <div style={{ marginRight : 15, cursor:'pointer' }}>
+        <MenuDialog/>
       </div>
     </Container>
   );
