@@ -22,7 +22,7 @@ export default function MenuDialog() {
     setAnchorEl(null);
   };
   return (
-    <Fragment>
+    <Fragment style={{ cursor: "pointer" }}>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Tooltip title="Account settings">
           <IconButton
