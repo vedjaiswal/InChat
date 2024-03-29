@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useContext } from "react";
 import {
   TextField,
   styled,
@@ -14,6 +14,10 @@ import {
   Checkbox
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { authenticateLoginApi } from "../../service/api.js";
+import { useNavigate } from "react-router-dom";
+import { DataContext } from "../../context/DataProvider";
+import Cookies from 'js-cookie'
 
 const Container = styled(Box)`
   display: flex;
@@ -122,16 +126,50 @@ const StyledTextField = styled(TextField)(({ theme })=>({
 
 function Login({ toggleLogin }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [loginData, setLoginData] =useState({
+    username: '',
+    password: ''
+  })
+
+  const { setToken, setEmail } = useContext(DataContext);
+  const navigate = useNavigate();
+  
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  const onValueChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+    console.log(loginData);
+  };
+
+  /* login submit handler to set token and cookie*/
+  const submitHandler = async (event) => {
+    event.preventDefault();
+    let res = await authenticateLoginApi(loginData);
+    console.log(res)
+    const email = loginData.email;
+      const auth_token = res.data.auth_token
+      if(res.status === 200){
+          const userData = {
+              email,
+              auth_token
+          }; 
+          Cookies.set('auth_token', JSON.stringify(userData), { expires: 1 });
+          setEmail(email);
+          setToken(auth_token)
+          navigate('/')
+      }
+  }
+  /* login submit handler end*/
+
   return (
     <Container>
-      <StyledTextField variant="filled" label="Username" />
+      <StyledTextField variant="filled" label="Username" name="username" onChange={(e)=>{onValueChange(e)}}/>
       <PasswordInput variant="filled">
         <InputLabel>Password</InputLabel>
         <FilledInput
           type={showPassword ? "text" : "password"}
+          name="password" onChange={(e)=>{onValueChange(e)}}
           endAdornment={
             <InputAdornment position="end">
               <IconButton onClick={handleClickShowPassword}>
@@ -158,7 +196,7 @@ function Login({ toggleLogin }) {
         sx={{ color : "secondary.light", marginLeft:"-70px" }}
         label={<Typography variant="span" style={{ fontSize : "0.5 rem" }}>Remember me for a month</Typography>}
       />
-      <SignUpButton variant="contained">Sign In</SignUpButton>
+      <SignUpButton variant="contained" onClick={submitHandler}>Sign In</SignUpButton>
       <SignInText>
         Don't have an account? <span onClick={toggleLogin} >Sign Up</span>
       </SignInText>
