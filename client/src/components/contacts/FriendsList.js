@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import {
   List,
   ListItem,
+  ListItemButton,
   ListItemAvatar,
   ListItemText,
   Divider,
@@ -14,6 +15,8 @@ import { users } from "../data/users";
 function FriendsList() {
   return (
     <List
+    // component="nav"
+    // aria-labelledby="nested-list-subheader"
       sx={{
         width: "100%",
         // bgcolor: 'secondary.dark'
@@ -21,7 +24,8 @@ function FriendsList() {
     >
       {users.map((user) => (
         <>
-          <ListItem alignItems="flex-start" style={{ cursor: "pointer" }}>
+          <ListItem disablePadding alignItems="flex-start" style={{ cursor: "pointer" }}>
+            <ListItemButton>
             <ListItemAvatar>
               <Avatar alt="profile pic" src={user.imageURL} />
             </ListItemAvatar>
@@ -41,6 +45,7 @@ function FriendsList() {
                 </Fragment>
               }
             />
+            </ListItemButton>
           </ListItem>
           <Divider component="li" />
         </>

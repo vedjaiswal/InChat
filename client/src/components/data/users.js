@@ -2,12 +2,14 @@ export const users = [
     {
         name : "Zorojuro",
         lastMessage : "Where are you?",
+        description : "Strongest Swordmen in the world",
         imageURL : "https://i.pinimg.com/originals/de/41/75/de41752587e2d6d950b1d38bdb8917b8.jpg",
         date : "11:11pm",
     },
     {
         name : "Sangoro",
         lastMessage : "Meat is ready!!!",
+        description : "in search of All Blue",
         imageURL : "https://tse2.mm.bing.net/th?id=OIP.wVUFx0ZO4_jMIhsjOifRbwHaHJ&pid=Api&P=0&h=180",
         date : "9:03pm",
     },

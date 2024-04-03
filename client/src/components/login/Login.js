@@ -1,4 +1,4 @@
-import React, { useState , useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextField,
   styled,
@@ -11,13 +11,13 @@ import {
   Button,
   Typography,
   FormControlLabel,
-  Checkbox
+  Checkbox,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { authenticateLoginApi } from "../../service/api.js";
 import { useNavigate } from "react-router-dom";
 import { DataContext } from "../../context/DataProvider";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 const Container = styled(Box)`
   display: flex;
@@ -29,7 +29,7 @@ const Container = styled(Box)`
   grid-area: right;
 `;
 
-const SignUpButton = styled(Button)(({ theme })=>({
+const SignUpButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
   backgroundColor: theme.palette.primary.main,
   width: 300,
@@ -39,7 +39,7 @@ const SignUpButton = styled(Button)(({ theme })=>({
   },
 }));
 
-const SignInText = styled(Typography)(({ theme })=>({
+const SignInText = styled(Typography)(({ theme }) => ({
   color: theme.palette.secondary.main,
   fontSize: 14,
   " > span": {
@@ -51,7 +51,7 @@ const SignInText = styled(Typography)(({ theme })=>({
   },
 }));
 
-const PasswordInput = styled(FormControl)(({ theme })=>({
+const PasswordInput = styled(FormControl)(({ theme }) => ({
   width: 300,
   "& label.Mui-focused": {
     color: theme.palette.secondary.light,
@@ -83,7 +83,7 @@ const PasswordInput = styled(FormControl)(({ theme })=>({
   // },
 }));
 
-const StyledTextField = styled(TextField)(({ theme })=>({
+const StyledTextField = styled(TextField)(({ theme }) => ({
   width: 300,
   "& label, label.Mui-focused": {
     color: theme.palette.secondary.light,
@@ -126,14 +126,13 @@ const StyledTextField = styled(TextField)(({ theme })=>({
 
 function Login({ toggleLogin }) {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] =useState({
-    username: '',
-    password: ''
-  })
+  const [loginData, setLoginData] = useState({
+    username: "",
+    password: "",
+  });
 
   const { setToken, setEmail } = useContext(DataContext);
   const navigate = useNavigate();
-  
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -146,30 +145,40 @@ function Login({ toggleLogin }) {
   const submitHandler = async (event) => {
     event.preventDefault();
     let res = await authenticateLoginApi(loginData);
-    console.log(res)
+    console.log(res);
     const email = loginData.email;
-      const auth_token = res.data.auth_token
-      if(res.status === 200){
-          const userData = {
-              email,
-              auth_token
-          }; 
-          Cookies.set('auth_token', JSON.stringify(userData), { expires: 1 });
-          setEmail(email);
-          setToken(auth_token)
-          navigate('/')
-      }
-  }
+    const auth_token = res.data.auth_token;
+    if (res.status === 200) {
+      const userData = {
+        email,
+        auth_token,
+      };
+      Cookies.set("auth_token", JSON.stringify(userData), { expires: 1 });
+      setEmail(email);
+      setToken(auth_token);
+      navigate("/");
+    }
+  };
   /* login submit handler end*/
 
   return (
     <Container>
-      <StyledTextField variant="filled" label="Username" name="username" onChange={(e)=>{onValueChange(e)}}/>
+      <StyledTextField
+        variant="filled"
+        label="Username"
+        name="username"
+        onChange={(e) => {
+          onValueChange(e);
+        }}
+      />
       <PasswordInput variant="filled">
         <InputLabel>Password</InputLabel>
         <FilledInput
           type={showPassword ? "text" : "password"}
-          name="password" onChange={(e)=>{onValueChange(e)}}
+          name="password"
+          onChange={(e) => {
+            onValueChange(e);
+          }}
           endAdornment={
             <InputAdornment position="end">
               <IconButton onClick={handleClickShowPassword}>
@@ -185,20 +194,27 @@ function Login({ toggleLogin }) {
       </PasswordInput>
       <FormControlLabel
         control={
-          <Checkbox 
-          size="small"
-          sx={{ color : "secondary.light"}}
-          // color="secondary.dark"
-          // checked={jason} 
-          // onChange={handleChange} 
-          name="remember" />
+          <Checkbox
+            size="small"
+            sx={{ color: "secondary.light" }}
+            // color="secondary.dark"
+            // checked={jason}
+            // onChange={handleChange}
+            name="remember"
+          />
         }
-        sx={{ color : "secondary.light", marginLeft:"-70px" }}
-        label={<Typography variant="span" style={{ fontSize : "0.5 rem" }}>Remember me for a month</Typography>}
+        sx={{ color: "secondary.light", marginLeft: "-70px" }}
+        label={
+          <Typography variant="span" style={{ fontSize: "0.5 rem" }}>
+            Remember me for a month
+          </Typography>
+        }
       />
-      <SignUpButton variant="contained" onClick={submitHandler}>Sign In</SignUpButton>
+      <SignUpButton variant="contained" onClick={submitHandler}>
+        Sign In
+      </SignUpButton>
       <SignInText>
-        Don't have an account? <span onClick={toggleLogin} >Sign Up</span>
+        Don't have an account? <span onClick={toggleLogin}>Sign Up</span>
       </SignInText>
     </Container>
   );
