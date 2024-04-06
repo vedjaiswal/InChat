@@ -12,11 +12,16 @@ export const sendRequest = async (req,res) => {
             done
         */
 
+       /* 
+           to = sending the request to 
+           from = loggedin user 
+       */
+
         const {to,from} = req.body;
         const toUser = await User.findOne({ username: to }).select("-password");
         const fromUser = await User.findOne({ username: from }).select("-password");
 
-        if(req.user.id !== toUser.id){
+        if(req.user.id !== fromUser.id){
             return res.status(401).json({message:"Users token or request usernames are invalid"})
        }
 
@@ -28,10 +33,6 @@ export const sendRequest = async (req,res) => {
         if(isFriend){
             return res.status(409).json({message:"Already a Friend"});
         }
-        /* 
-            to = sending the request to 
-            from = loggedin user 
-        */
        
         
         console.log(toUser);
@@ -151,6 +152,28 @@ export const acceptRequest = async (req,res) => {
         
         return res.status(200).json({message:"Friends Added"});
 
+    } catch (error) {
+        res.status(500).json(error.message);  
+    }
+}
+
+export const rejectRequest = async (req,res) => {
+    try {
+        /*
+            to = loggedin user
+            from = request sent to the loggedin user
+        */
+       const {to,from} = req.body;
+       const deleteReq =  await Requests.deleteOne({
+            to:to,
+            from:from
+        });
+        if(deleteReq.deletedCount !== 1){
+            console.log("not deleted");
+            return res.status(404).json({message : "Request Not Found"});
+        }
+        console.log(deleteReq);
+        return res.status(200).json({message:"Request deleted Successfully"});
     } catch (error) {
         res.status(500).json(error.message);  
     }
