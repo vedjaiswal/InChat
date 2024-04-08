@@ -181,6 +181,7 @@ export const rejectRequest = async (req,res) => {
 export const getAllFriends = async (req,res) => {
     try {
         const allFriends = Friends.find({user : req.user.id});
+        return res.status(200).json(allFriends);
     } catch (error) {
         res.status(500).json(error.message);
     }
