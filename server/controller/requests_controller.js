@@ -106,7 +106,6 @@ export const acceptRequest = async (req,res) => {
         /*
             to = loggedin user
             from = request sent to the loggedin user
-            username = loggedin user's username 
         */
         const {to,from} = req.body;
         const toUser = await User.findOne({
@@ -176,5 +175,13 @@ export const rejectRequest = async (req,res) => {
         return res.status(200).json({message:"Request deleted Successfully"});
     } catch (error) {
         res.status(500).json(error.message);  
+    }
+}
+
+export const getAllFriends = async (req,res) => {
+    try {
+        const allFriends = Friends.find({user : req.user.id});
+    } catch (error) {
+        res.status(500).json(error.message);
     }
 }

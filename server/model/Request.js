@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 /*
-    { 
+    {
+        to:"yolo",
+        from:"vedjaiswal",
         name : "Franky",
         description : "Supeerrrrrrrrrrr",
         imageURL : "https://tse1.mm.bing.net/th?id=OIP.isCIg4bUGEpxSFWRGyXF5gHaHa&pid=Api&P=0&h=180",
