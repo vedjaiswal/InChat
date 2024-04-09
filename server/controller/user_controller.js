@@ -78,33 +78,66 @@ export const searchUser = async (req, res) => {
   try {
     const query = req.params.id;
 
+    // const agg = [
+    //     {
+    //       '$search': {
+    //         'index': 'inchat_search_user', 
+    //         'text': {
+    //           'query': query, 
+    //           'path': [
+    //             'username', 'fullname', 'email'
+    //           ]
+    //         }
+    //       }
+    //     }, {
+    //       '$sort': {
+    //         'username': 1, 
+    //         'fullname': 1, 
+    //         'email': 1
+    //       }
+    //     }, {
+    //       '$project': {
+    //         'fullname': 1, 
+    //         'username': 1, 
+    //         'email': 1, 
+    //         'imageUrl': 1, 
+    //         'description': 1
+    //       }
+    //     }
+    //   ];
     const agg = [
-        {
-          '$search': {
-            'index': 'inchat_search_user', 
-            'text': {
-              'query': query, 
-              'path': [
-                'username', 'fullname', 'email'
-              ]
+      {
+        '$match': {
+          '$or': [
+            {
+              'username': {
+                '$regex': query, 
+                '$options': 'i'
+              }
+            }, {
+              'fullname': {
+                '$regex': query, 
+                '$options': 'i'
+              }
+            }, {
+              'email': {
+                '$regex': query, 
+                '$options': 'i'
+              }
             }
-          }
-        }, {
-          '$sort': {
-            'username': 1, 
-            'fullname': 1, 
-            'email': 1
-          }
-        }, {
-          '$project': {
-            'fullname': 1, 
-            'username': 1, 
-            'email': 1, 
-            'imageUrl': 1, 
-            'description': 1
-          }
+          ]
         }
-      ];
+      }, {
+        '$project': {
+          'fullname': 1, 
+          'username': 1, 
+          'email': 1, 
+          'imageUrl': 1, 
+          'description': 1
+        }
+      }
+    ];
+    
 
     const client = await MongoClient.connect(
       process.env.DB_URL
