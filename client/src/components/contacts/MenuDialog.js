@@ -22,8 +22,8 @@ export default function MenuDialog() {
     setAnchorEl(null);
   };
   return (
-    <Fragment style={{ cursor: "pointer" }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+    <Fragment>
+      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', cursor : "pointer"}}>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}

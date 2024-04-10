@@ -17,6 +17,9 @@ import { DataContext } from "../../context/DataProvider.js";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
+//components
+import CompleteProfile from "./CompleteProfile.js";
+
 const Container = styled(Box)`
   display: flex;
   width: 400px;
@@ -74,11 +77,6 @@ const PasswordInput = styled(FormControl)(({ theme })=>({
   "& .MuiTouchRipple-root": {
     color: "#fff",
   },
-  // "& .Mui-focused":{
-  //   color : "#040404",
-  //   borderColor : "#040404",
-  //   background : "#fff"
-  // },
 }));
 
 const StyledTextField = styled(TextField)(({ theme })=>({
@@ -99,33 +97,13 @@ const StyledTextField = styled(TextField)(({ theme })=>({
   },
   "& .MuiFilledInput-root:after": {
     borderBottomColor: "#fff",
-  },
-  // "& .MuiInput-underline:after": {
-  //   borderBottomColor: "#040404"
-  // },
-  // "& .MuiInput-underline": {
-  //   borderBottomColor: "#474747"
-  // },
-  // "& .MuiFilledInput-root ": {
-  //   "& fieldset": {
-  //     borderColor: "#040404"
-  //   },
-  //   "&:hover fieldset": {
-  //     borderColor: "#111111",
-  //     // backgroundColor : "#111111",
-  //     // color : "f1f1f1",
-  //     borderWidth: 8
-  //   },
-  //   "&.Mui-focused fieldset": {
-  //     borderColor: "#111111"
-  //   }
-  // }
+  }
 }));
 
 function Signup({ toggleLogin }) {
-  const navigate = useNavigate();
-  const { setToken, setEmail } = useContext(DataContext);
+  const { setToken, setUsername } = useContext(DataContext);
 
+  const [complete, setComplete] = useState(false);
   const [signUp, setSignUp] = useState({
     fullname: "",
     username: "",
@@ -135,38 +113,44 @@ function Signup({ toggleLogin }) {
   
   const onValueChange = (e) => {
     setSignUp({ ...signUp, [e.target.name]: e.target.value });
-    console.log(signUp);
+    // console.log(signUp);
   };
   
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleSignUp = async()=>{
     try {
       const response = await authenticateSignupApi(signUp);
-      const auth_token = response.data.auth_token;
-      const email = signUp.email
-      
+      console.log(response)
       if(response.status === 200){
+        const auth_token = response.data.auth_token;
+        const username = signUp.username      
         const userData = {
-          email,
+          username,
           auth_token  
         }
         Cookies.set('auth_token', JSON.stringify(userData), { expires: 1 });
-        setEmail(email);
+        setUsername(username);
         setToken(auth_token)
-        navigate('/login')
+        setComplete(true)
       }
 
       console.log(response);
     } catch (error) {
+      setError(true)
       console.log(error)
     }
   }
   return (
-    <Container>
+    <>
+    {complete ? <CompleteProfile/> : <Container>
       <StyledTextField variant="filled" label="Name" name="fullname" onChange={(e)=>{onValueChange(e)}} />
       <StyledTextField variant="filled" type="username" label="Username" name="username" onChange={(e)=>{onValueChange(e)}}/>
+      {error && <Typography color="error" sx={{ marginLeft: "-140px", marginTop:"-10px", fontWeight:600, fontSize:"0.8rem" }} variant="subtitle2">
+        Username already exists  
+      </Typography>}
       <StyledTextField variant="filled" type="email" label="Email Address" name="email" onChange={(e)=>{onValueChange(e)}} />
       <PasswordInput variant="filled">
         <InputLabel>Password</InputLabel>
@@ -191,7 +175,8 @@ function Signup({ toggleLogin }) {
       <SignInText>
         Already have an account? <span onClick={toggleLogin} >Sign In</span>
       </SignInText>
-    </Container>
+    </Container>}
+    </>
   );
 }
 

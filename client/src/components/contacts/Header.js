@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Box, Typography, styled, Avatar } from "@mui/material";
+
+import Cookies from "js-cookie";
+
+import { useNavigate } from "react-router-dom";
 
 //components
 import MenuDialog from "./MenuDialog";
+
+//context 
+import { DataContext } from "../../context/DataProvider";
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -27,6 +34,17 @@ const ProfileText = styled(Typography)(({ theme }) => ({
 }));
 
 function Header() {
+
+  const { username } = useContext(DataContext);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    const userCookie = Cookies.get("auth_token");
+    if (!userCookie) {
+      navigate('/login')
+    }
+  }, [])
+
   return (
     <Container>
       <div
@@ -48,7 +66,7 @@ function Header() {
           alt="profile pic"
           src="https://cdn.dribbble.com/users/2987571/screenshots/7084912/luffy-01_4x.png"
         />
-        <ProfileText>luffytaro</ProfileText>
+        <ProfileText>{username}</ProfileText>
       </div>
       <div style={{ marginRight: 15 }}>
         <MenuDialog />
