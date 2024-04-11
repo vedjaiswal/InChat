@@ -101,82 +101,90 @@ export const showReceivedRequest = async (req,res) => {
     }
 }
 
-export const acceptRequest = async (req,res) => {
+export const requestAction = async (req,res) => {
     try {
         /*
             to = loggedin user
             from = request sent to the loggedin user
         */
-        const {to,from} = req.body;
-        const toUser = await User.findOne({
-            username : to
-        })
-        const fromUser = await User.findOne({
-            username : from
-        })
-
-       if(req.user.id !== toUser.id){
-            return res.status(401).json({message:"User is invalid"})
-       }
-        await Requests.deleteOne({
-            to:to,
-            from:from
-        })
-        const isFrnd = await Friends.findOne({
-            user : req.user.id,
-            friend : from
-        })
-        console.log(isFrnd)
-        if(isFrnd){
-            return res.status(401).json({message:"Already a friend"});
-        }
-
-        /* we want "from" users desc and image url */
-        await Friends.create({
-            user : req.user.id,
-            friend : from,
-            description : fromUser.description,
-            imageUrl : fromUser.imageUrl
-
-        });
-
-        /* we want "from" users desc and image url */
-        console.log("hello : " + fromUser.id)
-        await Friends.create({
-            user : fromUser.id,
-            friend : to,
-            description : toUser.description,
-            imageUrl : toUser.imageUrl
-        })
         
-        return res.status(200).json({message:"Friends Added"});
-
-    } catch (error) {
-        res.status(500).json(error.message);  
-    }
-}
-
-export const rejectRequest = async (req,res) => {
-    try {
-        /*
-            to = loggedin user
-            from = request sent to the loggedin user
-        */
-       const {to,from} = req.body;
-       const deleteReq =  await Requests.deleteOne({
-            to:to,
-            from:from
-        });
-        if(deleteReq.deletedCount !== 1){
-            console.log("not deleted");
-            return res.status(404).json({message : "Request Not Found"});
+        const {to,from,action} = req.body;
+        /* Accept Request */
+        if(action){
+            const toUser = await User.findOne({
+                username : to
+            })
+            const fromUser = await User.findOne({
+                username : from
+            })
+    
+           if(req.user.id !== toUser.id){
+                return res.status(401).json({message:"User is invalid"})
+           }
+            await Requests.deleteOne({
+                to:to,
+                from:from
+            })
+            const isFrnd = await Friends.findOne({
+                user : req.user.id,
+                friend : from
+            })
+            console.log(isFrnd)
+            if(isFrnd){
+                return res.status(401).json({message:"Already a friend"});
+            }
+    
+            /* we want "from" users desc and image url */
+            await Friends.create({
+                user : req.user.id,
+                friend : from,
+                description : fromUser.description,
+                imageUrl : fromUser.imageUrl
+    
+            });
+    
+            /* we want "from" users desc and image url */
+            console.log("hello : " + fromUser.id)
+            await Friends.create({
+                user : fromUser.id,
+                friend : to,
+                description : toUser.description,
+                imageUrl : toUser.imageUrl
+            })
+            
+            return res.status(200).json({message:"Friends Added"});
         }
-        console.log(deleteReq);
-        return res.status(200).json({message:"Request deleted Successfully"});
+        /* Accept Request End */
+        else{
+            const {to,from} = req.body;
+            const deleteReq =  await Requests.deleteOne({
+                to:to,
+                from:from
+            });
+            if(deleteReq.deletedCount !== 1){
+                console.log("not deleted");
+                return res.status(404).json({message : "Request Not Found"});
+            }
+            console.log(deleteReq);
+            return res.status(200).json({message:"Request deleted Successfully"});
+        }
+
     } catch (error) {
         res.status(500).json(error.message);  
     }
 }
+
+// export const rejectRequest = async (req,res) => {
+//     try {
+//         /*
+//             to = loggedin user
+//             from = request sent to the loggedin user
+//         */
+       
+//     } catch (error) {
+//         res.status(500).json(error.message);  
+//     }
+// }
 
 export const getAllFriends = async (req,res) => {
     try {
