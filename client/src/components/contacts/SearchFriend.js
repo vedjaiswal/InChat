@@ -4,7 +4,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SearchIcon from '@mui/icons-material/Search';
 
 //api
-import { getSearchedUser } from '../../service/api';
+import { getSearchedUser, sentRequest } from '../../service/api';
 
 //context
 import { DataContext } from '../../context/DataProvider';
@@ -50,11 +50,13 @@ function SearchFriend() {
     const [searchText, setSearchText] = useState('');
     const [users, setUsers] = useState([])
 
-    const { token } = useContext(DataContext);
+    const { token, username } = useContext(DataContext);
 
-    const onRequestSent = (e, user) =>{
+    const onRequestSent = async(e, user) =>{
         e.preventDefault();
+        console.log("request sent to : ", user.username)
         console.log(user)
+        await sentRequest(user.username, username, token);
     }
 
     const onSearchChange = (e) =>{
@@ -70,9 +72,7 @@ function SearchFriend() {
               }, 1000)
 
             return () => clearTimeout(getUsers)
-        }
-
-        
+        }        
     }, [searchText])
 
   return (

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import {
   List,
   ListItem,
@@ -10,12 +10,19 @@ import {
   Box, Button, styled
 } from "@mui/material";
 
+//api
+import { getAllRequests, requestAction } from "../../service/api";
+
+//context
+import { DataContext } from "../../context/DataProvider";
+
 //icons
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import { request } from "../data/requests";
+// import { request } from "../data/requests";
 
+//utils
 import { stringShortner } from "../../utils/stringShortner";
 
 const ButtonGroup = styled(Box)({
@@ -27,12 +34,30 @@ const StyledButton = styled(Button)({
     height: 25,
     minWidth : 30,
     padding : 0,
-
-
 })
 
 
 function RequestList() {
+
+  const [ requests, setRequests ] = useState([]);
+
+  const { token, username } = useContext(DataContext);
+
+  useEffect(()=>{
+    async function getRequests(){
+      let response = await getAllRequests(token)
+      console.log(response)
+      setRequests(response.data)
+    }
+    getRequests()
+  }, [])
+
+  const onRequestAction = async(e, to, action) =>{
+    e.preventDefault();
+    let response = await requestAction(token, username, to, action);
+    console.log(response);
+  }
+
   return (
     <List
       sx={{
@@ -40,7 +65,7 @@ function RequestList() {
         // bgcolor: 'secondary.dark'
       }}
     >
-      {request.map((req) => (
+      {requests.map((req) => (
         <>
           <ListItem disablePadding alignItems="flex-start" style={{ 
             display : "flex",
@@ -48,10 +73,10 @@ function RequestList() {
             alignItems : "center",
           }}>
             <ListItemAvatar>
-              <Avatar alt="profile pic" src={req.imageURL} />
+              <Avatar alt="profile pic" src={req.imageUrl} />
             </ListItemAvatar>
             <ListItemText
-              primary={req.name}
+              primary={req.from}
               secondary={
                 <Fragment>
                   <Typography
@@ -66,8 +91,8 @@ function RequestList() {
               }
             />
             <ButtonGroup>
-                <StyledButton variant="contained"><CheckIcon /></StyledButton>
-                <StyledButton variant="contained"><ClearIcon /></StyledButton>
+                <StyledButton onClick={(e)=>onRequestAction(e, req.from, true)} variant="contained"><CheckIcon /></StyledButton>
+                <StyledButton onClick={(e)=>onRequestAction(e, req.from, false)} variant="contained"><ClearIcon /></StyledButton>
             </ButtonGroup>
           </ListItem>
           <Divider component="li" />
