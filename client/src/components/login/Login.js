@@ -126,12 +126,13 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 function Login({ toggleLogin }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(false);
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
   });
 
-  const { setToken, setEmail } = useContext(DataContext);
+  const { setToken, setUsername } = useContext(DataContext);
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -146,17 +147,20 @@ function Login({ toggleLogin }) {
     event.preventDefault();
     let res = await authenticateLoginApi(loginData);
     console.log(res);
-    const email = loginData.email;
+    const username = loginData.username;
     const auth_token = res.data.auth_token;
     if (res.status === 200) {
       const userData = {
-        email,
+        username,
         auth_token,
       };
       Cookies.set("auth_token", JSON.stringify(userData), { expires: 1 });
-      setEmail(email);
+      setUsername(username);
       setToken(auth_token);
       navigate("/");
+    }
+    else{
+      setError(true);
     }
   };
   /* login submit handler end*/
@@ -192,6 +196,7 @@ function Login({ toggleLogin }) {
           }
         />
       </PasswordInput>
+      {error && <Typography color="error" sx={{ marginLeft: "-100px", fontWeight:600, fontSize:"0.8rem" }} variant="subtitle2">Invalid Username or Password</Typography>}
       <FormControlLabel
         control={
           <Checkbox
@@ -203,7 +208,7 @@ function Login({ toggleLogin }) {
             name="remember"
           />
         }
-        sx={{ color: "secondary.light", marginLeft: "-70px" }}
+        sx={{ color: "secondary.light", marginLeft: "-70px" , marginTop:"-10px"}}
         label={
           <Typography variant="span" style={{ fontSize: "0.5 rem" }}>
             Remember me for a month

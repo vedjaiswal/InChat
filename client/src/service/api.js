@@ -21,3 +21,28 @@ export const authenticateLoginApi = async(data) => {
         return error.response;
     }
 }
+
+export const getSearchedUser = async(queryText, token) => {
+    try{
+        let response = await axios.get(`${URL}/searchUser/${queryText}`, {
+            headers : {
+                auth_token : token
+            }
+        })
+        return response;
+    }
+    catch(error){
+        console.log("error while getting all users : ", error);
+        return error.response;
+    }
+}
+
+export const sentRequest = async(to, from, token) =>{
+    try{
+
+    }
+    catch(error){
+        console.log("error while sending request : ", error);
+        return error.response;
+    }
+}

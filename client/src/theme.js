@@ -12,6 +12,9 @@ export const theme = createTheme({
             light : "#5e5b52",
             dark : "#424242"
         },
+        text : {
+            primary : "#010101"
+        },
         dark : "#111111",
         light : "#fdf8e1"
     }

@@ -1,7 +1,16 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
-import { InputBase, Box, List, ListItem, styled } from '@mui/material'
+import React, {Fragment, useState, useEffect, useContext} from 'react'
+import { Typography, Button, Divider, Avatar, ListItemAvatar, InputBase, Box, List, ListItem, ListItemText, styled } from '@mui/material'
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SearchIcon from '@mui/icons-material/Search';
+
+//api
+import { getSearchedUser } from '../../service/api';
+
+//context
+import { DataContext } from '../../context/DataProvider';
+
+//utils
+import { stringShortner } from "../../utils/stringShortner";
 
 const SearchContainer = styled(Box)`
     background : #fff;
@@ -10,6 +19,11 @@ const SearchContainer = styled(Box)`
     margin-left : 10px;
     display : flex;
 `
+
+const StyledButton = styled(Button)({
+    height: 25,
+    minWidth : 30,
+})
 
 const InputSearchBase = styled(InputBase)`
     padding-left : 20px;
@@ -24,47 +38,90 @@ const SearchIconWrapper = styled(Box)`
     cursor : pointer;
 `;
 
-// const ListWrapper = styled(List)`
-// position: absolute;
-// background: #FFFFFF;
-// color: #000;
-// margin-top: 36px;
-// `
+const ListWrapper = styled(List)`
+position: absolute;
+background: #FFFFFF;
+color: #000;
+margin-top: 36px;
+`
 
 function SearchFriend() {
 
-  const [text, setText] = useState('');
+    const [searchText, setSearchText] = useState('');
+    const [users, setUsers] = useState([])
 
-  const getText = (text) => {
-      setText(text);
-  }
+    const { token } = useContext(DataContext);
+
+    const onRequestSent = (e, user) =>{
+        e.preventDefault();
+        console.log(user)
+    }
+
+    const onSearchChange = (e) =>{
+      setSearchText(e.target.value)
+    }
+
+    useEffect(() => {
+        if(searchText){
+            const getUsers = setTimeout(async() => {
+                let response = await getSearchedUser(searchText, token)
+                console.log(response.data)
+                setUsers(response.data)
+              }, 1000)
+
+            return () => clearTimeout(getUsers)
+        }
+
+        
+    }, [searchText])
 
   return (
     <SearchContainer>
       <InputSearchBase 
           placeholder='Search username'
-          onChange={(e) => getText(e.target.value)}
-          value={text}
+          onChange={(e) => onSearchChange(e)}
+          value={searchText}
       />
       <SearchIconWrapper>
           <SearchIcon />
       </SearchIconWrapper>
-      {/* {
-          text && 
+      {
+          users.length !== 0 && 
           <ListWrapper>
               {
-                  products.filter(product => product.title.longTitle.toLowerCase().includes(text.toLocaleLowerCase())).map(product => (
-                      <ListItem>
-                          <Link to = {`/product/${product.id}`}
-                          onClick={() => setText('')}
-                          style={{ textDecoration: 'none', color: 'inherit'}}>
-                          {product.title.longTitle}
-                          </Link>
-                      </ListItem>
+                  users.map(user => (
+                    <>
+                    <ListItem disablePadding alignItems="flex-start" style={{ 
+                      display : "flex",
+                      padding : 8,
+                      alignItems : "center",
+                    }}>
+                      <ListItemAvatar>
+                        <Avatar alt="profile pic" src={user.imageURL} />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={user.username}
+                        secondary={
+                          <Fragment>
+                            <Typography
+                              sx={{ display: "inline" }}
+                              component="span"
+                              variant="body2"
+                              color="secondary.light"
+                            >
+                              {stringShortner(user.description)}
+                            </Typography>
+                          </Fragment>
+                        }
+                      />
+                      <StyledButton onClick={(e) => onRequestSent(e, user)}><PersonAddIcon fontSize='large'/></StyledButton>
+                    </ListItem>
+                    <Divider component="li" />
+                  </>
                   ))
               }
           </ListWrapper>
-      } */}
+      }
     </SearchContainer>
   )
 }
