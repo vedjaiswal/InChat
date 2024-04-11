@@ -12,7 +12,7 @@ router.get('/searchUser/:id',fetchuser,searchUser);
 router.post('/sendRequest',fetchuser,sendRequest);
 router.post('/showSentRequest',fetchuser,showSentRequest);
 router.get('/showReceivedRequest',fetchuser,showReceivedRequest);
-router.post('/acceptRequest',fetchuser,requestAction);
+router.post('/requestAction',fetchuser,requestAction);
 // router.post('/rejectRequest',fetchuser,rejectRequest);
 router.get('getAllFriends',fetchuser,getAllFriends);
 
