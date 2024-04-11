@@ -14,6 +14,6 @@ router.post('/showSentRequest',fetchuser,showSentRequest);
 router.get('/showReceivedRequest',fetchuser,showReceivedRequest);
 router.post('/requestAction',fetchuser,requestAction);
 // router.post('/rejectRequest',fetchuser,rejectRequest);
-router.get('getAllFriends',fetchuser,getAllFriends);
+router.get('/getAllFriends',fetchuser,getAllFriends);
 
 export default router;
