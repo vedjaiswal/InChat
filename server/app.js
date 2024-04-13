@@ -6,6 +6,8 @@ import 'dotenv'
 import Connection from './database/db.js'
 import Routes from './routes/routes.js'
 
+import fileUpload from 'express-fileupload'
+
 const app = express();
 const PORT = 5000;
 
@@ -14,6 +16,9 @@ Connection();
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use(fileUpload({
+    useTempFiles:true
+}));
 
 app.use('/', Routes);   
 

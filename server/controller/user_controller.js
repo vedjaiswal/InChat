@@ -1,6 +1,7 @@
 import User from "../model/UserSchema.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import {deleteAvatar, uploadAvatar} from '../utils/cloudinary.js'
 import { MongoClient } from 'mongodb';
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -153,3 +154,35 @@ export const searchUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const profileUpdate = async (req , res) => {
+  try {
+    const {fullname , description } = req.body;
+    const avatar = req.files ? req.files.avatar : null;
+    const updateProfile = {}
+
+    let user = await User.findById(req.user.id);
+    if(!user){
+      return res.status(404).send("User Not Found")
+    }
+
+    if(fullname){
+      updateProfile.fullname = fullname;
+    }
+    if(avatar){
+      /* to-do : Delete the existing photo in cloudinary */
+
+      await deleteAvatar(user.imageUrl);
+      const uploadUrl = await uploadAvatar(avatar.tempFilePath);
+      updateProfile.imageUrl = uploadUrl;
+    }
+    if(description){
+      updateProfile.description = description;
+    }
+
+   const userUpdate = await User.findByIdAndUpdate(req.user.id, { $set: updateProfile }, { new: true });
+    res.status(200).json(userUpdate);
+  } catch (error) {
+    
+  }
+}
