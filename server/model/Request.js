@@ -10,11 +10,23 @@ import mongoose from 'mongoose';
 */
 const reqSchema = new mongoose.Schema({
   to: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'User',
     required:true,
   },
   from: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'User',
+    required:true
+  },
+  toUsername : {
+    type : String,
+    ref : 'User',
+    required:true
+  },
+  fromUsername : {
+    type : String,
+    ref : 'User',
     required:true
   },
   description : {

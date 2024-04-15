@@ -16,7 +16,7 @@ const friend = new mongoose.Schema({
     },
    friend : {
     type : String,
-    ref:'Users',
+    ref:'User',
     required : true
    },
    lastMessage : {

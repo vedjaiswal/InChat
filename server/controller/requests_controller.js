@@ -17,29 +17,24 @@ export const sendRequest = async (req,res) => {
            from = loggedin user 
        */
 
-        const {to,from} = req.body;
-        const toUser = await User.findOne({ username: to }).select("-password");
-        const fromUser = await User.findOne({ username: from }).select("-password");
-
-        if(req.user.id !== fromUser.id){
-            return res.status(401).json({message:"Users token or request usernames are invalid"})
-       }
+        const {to,from} = req.body; // to,from --> id
+        const toUser = await User.findOne({ _id: to }).select("-password");
+        const fromUser = await User.findOne({ _id: from }).select("-password");
+        console.log(toUser);
+        console.log(fromUser)
+        if(!toUser || !fromUser || (req.user.id !== fromUser.id)){
+            return res.status(400).json({error:"Users are invalid"});
+        }
 
         const isFriend = await Friends.findOne({
             user:req.user.id,
-            friend:to
+            friend:toUser.username
         })
         
         if(isFriend){
             return res.status(409).json({message:"Already a Friend"});
         }
        
-        
-        console.log(toUser);
-        console.log(fromUser)
-        if(!toUser || !fromUser || (from !== fromUser.username)){
-            return res.status(400).json({error:"Users are invalid"});
-        }
         const requestSentAlready = await Requests.findOne({
             to:to,
             from:from,
@@ -51,6 +46,8 @@ export const sendRequest = async (req,res) => {
         await Requests.create({
             to:to,
             from:from,
+            toUsername : toUser.username,
+            fromUsername : fromUser.username,
             description : fromUser.description,
             imageUrl : fromUser.imageUrl
         });
@@ -80,8 +77,8 @@ export const showSentRequest = async (req,res) => {
 
 export const showReceivedRequest = async (req,res) => {
     try {
-        const user = await User.findOne({_id : req.user.id}).select("-password");
-        console.log(user)
+        // const user = await User.findOne({_id : req.user.id}).select("-password");
+        // console.log(user)
         /*
             user = loggedin user 
             checking the user in "to" because we are checking the request sent to the loggedin user
@@ -89,9 +86,8 @@ export const showReceivedRequest = async (req,res) => {
             to = request receiver
             from = request sender
         */
-       
         const receiveRequestList = await Requests.find({
-            to:user.username
+            to:req.user.id
         }).select("-to");
         console.log(receiveRequestList)
         return res.status(200).json(receiveRequestList);
@@ -108,23 +104,23 @@ export const requestAction = async (req,res) => {
             from = request sent to the loggedin user
         */
         
-        const {to,from,action} = req.body;
+        const {to,from,action} = req.body; // to,from --> id
         /* Accept Request */
         if(action){
             const toUser = await User.findOne({
-                username : to
+                _id : to
             })
             const fromUser = await User.findOne({
-                username : from
+                _id : from
             })
     
-           if(req.user.id !== toUser.id){
-                return res.status(401).json({message:"User is invalid"})
+           if((req.user.id !== toUser.id) || !toUser || !fromUser){
+                return res.status(401).json({message:"User is invalid"});
            }
             await Requests.deleteOne({
                 to:to,
                 from:from
-            })
+            });
             const isFrnd = await Friends.findOne({
                 user : req.user.id,
                 friend : from
@@ -137,7 +133,7 @@ export const requestAction = async (req,res) => {
             /* we want "from" users desc and image url */
             await Friends.create({
                 user : req.user.id,
-                friend : from,
+                friend : fromUser.username,
                 description : fromUser.description,
                 imageUrl : fromUser.imageUrl
     
@@ -147,7 +143,7 @@ export const requestAction = async (req,res) => {
             console.log("hello : " + fromUser.id)
             await Friends.create({
                 user : fromUser.id,
-                friend : to,
+                friend : toUser.username,
                 description : toUser.description,
                 imageUrl : toUser.imageUrl
             })
@@ -156,7 +152,6 @@ export const requestAction = async (req,res) => {
         }
         /* Accept Request End */
         else{
-            const {to,from} = req.body;
             const deleteReq =  await Requests.deleteOne({
                 to:to,
                 from:from
