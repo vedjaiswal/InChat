@@ -44,7 +44,7 @@ function Home() {
               <Header/>
               <TabContainer/>
             </LeftContainer>
-            <RightContainer> chat section</RightContainer>
+            <RightContainer> <Chat/> </RightContainer>
         </MainContainer>
     </Container>
   )

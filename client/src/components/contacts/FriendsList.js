@@ -25,13 +25,14 @@ function FriendsList() {
   const { token } = useContext(DataContext);
 
   useEffect(()=>{
-    async function getFriends(){
+    async function getFriends(token){
+      // console.log("token : " + token);
       let response = await getAllFriends(token)
-      console.log(response)
+      // console.log(response)
       setFriends(response.data)
     }
-    getFriends()
-  }, [])
+    if(token !== '') getFriends(token)
+  }, [token])
 
   return (
     <List
@@ -42,8 +43,8 @@ function FriendsList() {
         // bgcolor: 'secondary.dark'
       }}
     >
-      {friends.map((user) => (
-        <>
+      {friends.map((user, index) => (
+        <div key={index}>
           <ListItem disablePadding alignItems="flex-start" style={{ cursor: "pointer" }}>
             <ListItemButton>
             <ListItemAvatar>
@@ -68,7 +69,7 @@ function FriendsList() {
             </ListItemButton>
           </ListItem>
           <Divider component="li" />
-        </>
+        </div>
       ))}
     </List>
   );
