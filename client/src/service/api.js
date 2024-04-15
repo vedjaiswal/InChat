@@ -83,3 +83,32 @@ export const requestAction = async(token, to, from, action)=>{
         return error.message;
     }
 }
+
+export const getAllFriends = async(token) =>{
+    try{
+        let response = await axios.get(`${URL}/getAllFriends`, {
+            headers : {
+                auth_token : token
+            }
+        })
+        return response
+    }
+    catch(error){
+        console.log("error while getting all friends", error);
+        return error.message
+    }
+}
+
+export const updateProfile = async(token, data)=>{
+    try{
+        let response = await axios.patch(`${URL}/profileUpdate`, data, {
+            headers :{
+                'auth_token' : token
+            }
+        });
+        return response;
+    }
+    catch(error){
+        console.log("error while updating Profile details : ", error);
+    }
+}

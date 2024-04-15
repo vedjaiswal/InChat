@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import {
   List,
   ListItem,
@@ -10,9 +10,29 @@ import {
   Typography,
 } from "@mui/material";
 
+//api
+import { getAllFriends } from "../../service/api";
+
+//context
+import { DataContext } from "../../context/DataProvider";
+
 import { users } from "../data/users";
 
 function FriendsList() {
+
+  const [ friends, setFriends ] = useState([]);
+
+  const { token } = useContext(DataContext);
+
+  useEffect(()=>{
+    async function getFriends(){
+      let response = await getAllFriends(token)
+      console.log(response)
+      setFriends(response.data)
+    }
+    getFriends()
+  }, [])
+
   return (
     <List
     // component="nav"
@@ -22,15 +42,15 @@ function FriendsList() {
         // bgcolor: 'secondary.dark'
       }}
     >
-      {users.map((user) => (
+      {friends.map((user) => (
         <>
           <ListItem disablePadding alignItems="flex-start" style={{ cursor: "pointer" }}>
             <ListItemButton>
             <ListItemAvatar>
-              <Avatar alt="profile pic" src={user.imageURL} />
+              <Avatar alt="profile pic" src={user.imageUrl} />
             </ListItemAvatar>
             <ListItemText
-              primary={user.name}
+              primary={user.friend}
               secondary={
                 <Fragment>
                   <Typography

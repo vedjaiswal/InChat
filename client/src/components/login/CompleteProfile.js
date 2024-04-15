@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, Box, Avatar, TextField, styled } from "@mui/material";
 import {useNavigate} from 'react-router-dom'
+
+//context 
+import { DataContext } from "../../context/DataProvider";
+
+//api
+import { updateProfile } from "../../service/api";
 
 const StyledTextField = styled(TextField)(({ theme })=>({
     width: 300,
@@ -44,6 +50,8 @@ function CompleteProfile() {
   const [description, setDescription] = useState("");
   const [avatar, setAvatar] = useState(null)
 
+  const { token } = useContext(DataContext);
+
   const navigate = useNavigate();
 
   const handleImageChange = (event) => {
@@ -58,11 +66,13 @@ function CompleteProfile() {
     setDescription(event.target.value);
   }
 
-  const onFormSubmit = (event) =>{
+  const onFormSubmit = async(event) =>{
     event.preventDefault();
     const formData = new FormData();
-    formData.append('image', avatar);
+    formData.append('avatar', avatar);
     formData.append('description', description);
+    let response = await updateProfile(token, formData);
+    console.log(response)
     navigate('/')
   }
 

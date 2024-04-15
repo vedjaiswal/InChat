@@ -123,7 +123,7 @@ function Signup({ toggleLogin }) {
   const handleSignUp = async()=>{
     try {
       const response = await authenticateSignupApi(signUp);
-      console.log(response)
+      // console.log(response)
       if(response.status === 200){
         const auth_token = response.data.auth_token;
         const username = signUp.username      
@@ -137,7 +137,7 @@ function Signup({ toggleLogin }) {
         setComplete(true)
       }
 
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       setError(true)
       console.log(error)
