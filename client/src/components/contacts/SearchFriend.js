@@ -56,7 +56,7 @@ function SearchFriend() {
         e.preventDefault();
         console.log("request sent to : ", user.username)
         console.log(user)
-        await sentRequest(user.username, username, token);
+        await sentRequest(user._id, token);
     }
 
     const onSearchChange = (e) =>{

@@ -37,9 +37,9 @@ export const getSearchedUser = async(queryText, token) => {
     }
 }
 
-export const sentRequest = async(to, from, token) =>{
+export const sentRequest = async(to, token) =>{
     try{
-        let response = await axios.post(`${URL}/sendRequest`, { to : to, from : from}, {
+        let response = await axios.post(`${URL}/sendRequest`, { to : to}, {
             headers : {
                 auth_token : token
             }
@@ -68,10 +68,10 @@ export const getAllRequests = async(token) =>{
     }
 }
 
-export const requestAction = async(token, to, from, action)=>{
+export const requestAction = async(token, from, action)=>{
     try{
-        console.log("to : " + to + " from : " + from + " action : " + action + " token : " + token);
-        let response = await axios.post(`${URL}/requestAction`, {to : to, from : from, action : action}, {
+        console.log("from : " + from + " action : " + action + " token : " + token);
+        let response = await axios.post(`${URL}/requestAction`, {from : from, action : action}, {
             headers : {
                 auth_token : token
             }

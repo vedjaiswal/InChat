@@ -54,7 +54,7 @@ function RequestList() {
 
   const onRequestAction = async(e, to, action) =>{
     e.preventDefault();
-    let response = await requestAction(token, username, to, action);
+    let response = await requestAction(token, to, action);
     console.log(response);
   }
 
@@ -76,7 +76,7 @@ function RequestList() {
               <Avatar alt="profile pic" src={req.imageUrl} />
             </ListItemAvatar>
             <ListItemText
-              primary={req.from}
+              primary={req.fromUsername}
               secondary={
                 <Fragment>
                   <Typography

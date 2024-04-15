@@ -12,9 +12,9 @@ export const theme = createTheme({
             light : "#5e5b52",
             dark : "#424242"
         },
-        text : {
-            primary : "#0f0fff"
-        },
+        // text : {
+        //     primary : "#be905e"
+        // },
         dark : "#111111",
         light : "#fdf8e1"
     }

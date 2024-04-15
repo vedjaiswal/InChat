@@ -7,7 +7,7 @@ import Header from '../contacts/Header'
 import TabContainer from './../contacts/TabContainer'
 
 //images
-import BackgroundImage from './../../images/bg-image.png'
+// import BackgroundImage from './../../images/bg-image.png'
 
 const Container = styled(Box)`
  height : 100vh;
@@ -15,7 +15,7 @@ const Container = styled(Box)`
  display : flex;
  justify-content: center;
  align-items : center;
- background-size : cover;
+ background-color : #010101;
 `
 
 const MainContainer = styled(Box)`
@@ -30,15 +30,15 @@ const LeftContainer = styled(Box)(({theme})=>({
     backgroundColor : theme.palette.light
 }))
 
-const RightContainer = styled(Box)({
-    height: "95vh",
-    width : "65vw",
-    backgroundColor : "#489274"
-})
+const RightContainer = styled(Box)(({theme})=>({
+  height: "95vh",
+  width : "65vw",
+  backgroundColor : theme.palette.secondary.dark
+}))
 
 function Home() {
   return (
-    <Container style={{backgroundImage : `url(${BackgroundImage})`}}>
+    <Container>
         <MainContainer>
             <LeftContainer>
               <Header/>
