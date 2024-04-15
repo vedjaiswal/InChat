@@ -17,7 +17,8 @@ export const sendRequest = async (req,res) => {
            from = loggedin user 
        */
 
-        const {to,from} = req.body; // to,from --> id
+        const {to} = req.body; // to,from --> id
+        const from = req.user.id;
         const toUser = await User.findOne({ _id: to }).select("-password");
         const fromUser = await User.findOne({ _id: from }).select("-password");
         console.log(toUser);
@@ -103,8 +104,8 @@ export const requestAction = async (req,res) => {
             to = loggedin user
             from = request sent to the loggedin user
         */
-        
-        const {to,from,action} = req.body; // to,from --> id
+        const to = req.user.id;
+        const {from,action} = req.body; // to,from --> id
         /* Accept Request */
         if(action){
             const toUser = await User.findOne({
