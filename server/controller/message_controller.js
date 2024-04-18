@@ -1,11 +1,11 @@
-import Message from '../model/MessageSchema.js'
+import Messages from '../model/MessageSchema.js'
 
 export const addMessages = async (req, res) => {
     try {
         const {message,to} = req.body;
         const from = req.user.id
 
-        await Message.create({
+        await Messages.create({
             message:{
                 text:message
             },
@@ -26,7 +26,7 @@ export const getAllMessages = async (req, res) => {
         if(from === to){
             return res.status(500).send("Please check the auth_token and -from-")
         }
-        const data  = await Message.find({
+        const data  = await Messages.find({
             users:{
                 $all:[from,to]
             }
@@ -40,6 +40,7 @@ export const getAllMessages = async (req, res) => {
           });
         
         return res.status(200).json(projectedMessages);
+        // res.status(200).send("signedup successfully")
     } catch (error) {
         res.status(500).json({"Error":error.message});        
     } 

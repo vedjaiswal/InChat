@@ -19,6 +19,11 @@ const friend = new mongoose.Schema({
     ref:'User',
     required : true
    },
+   friendId : {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+   },
    lastMessage : {
     type : String,
     default:"New Message"

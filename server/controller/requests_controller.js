@@ -36,11 +36,16 @@ export const sendRequest = async (req,res) => {
             return res.status(409).json({message:"Already a Friend"});
         }
        
-        const requestSentAlready = await Requests.findOne({
+        const requestSentAlready1 = await Requests.findOne({
             to:to,
             from:from,
         });
-        if(requestSentAlready){
+
+        const requestSentAlready2 = await Requests.findOne({
+            to:from,
+            from:to,
+        });
+        if(requestSentAlready1 || requestSentAlready2){
             return res.status(409).json({error:"request already sent"});
         }
 
@@ -135,9 +140,9 @@ export const requestAction = async (req,res) => {
             await Friends.create({
                 user : req.user.id,
                 friend : fromUser.username,
+                friendId : fromUser._id,
                 description : fromUser.description,
                 imageUrl : fromUser.imageUrl
-    
             });
     
             /* we want "from" users desc and image url */
@@ -145,6 +150,7 @@ export const requestAction = async (req,res) => {
             await Friends.create({
                 user : fromUser.id,
                 friend : toUser.username,
+                friendId : toUser._id,
                 description : toUser.description,
                 imageUrl : toUser.imageUrl
             })
