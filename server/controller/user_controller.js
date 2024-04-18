@@ -24,7 +24,7 @@ export const userLogIn = async (req, res) => {
     };
 
     const auth_token = jwt.sign(data, JWT_SECRET);
-    return res.status(200).json({ auth_token });
+    return res.status(200).json({ auth_token , user });
     // res.status(200).send("signedup successfully")
   } catch (error) {
     res.status(500).json("Error: ", error.message);
@@ -54,7 +54,7 @@ export const userSignUp = async (req, res) => {
       },
     };
     const auth_token = jwt.sign(data, JWT_SECRET);
-    res.status(200).json({ auth_token });
+    res.status(200).json({ auth_token , user});
     // res.status(200).send("signedup successfully")
   } catch (error) {
     res.status(500).json({ message: error.message });
