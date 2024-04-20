@@ -47,7 +47,7 @@ function ChatMessages({ currentFriend, token, socket}) {
         setArrivalMessage({ fromSelf : false, message : msg})
       })
     }
-  }, [])
+  }, [socket])
 
   useEffect(()=>{
     if(arrivalMessage){
