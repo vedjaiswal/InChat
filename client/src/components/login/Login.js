@@ -132,7 +132,7 @@ function Login({ toggleLogin }) {
     password: "",
   });
 
-  const { setToken, setUsername } = useContext(DataContext);
+  const { setToken, setUser } = useContext(DataContext);
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -147,15 +147,15 @@ function Login({ toggleLogin }) {
     event.preventDefault();
     let res = await authenticateLoginApi(loginData);
     console.log(res);
-    const username = loginData.username;
+    const user = res.data.user;
     const auth_token = res.data.auth_token;
     if (res.status === 200) {
       const userData = {
-        username,
+        user,
         auth_token,
       };
       Cookies.set("auth_token", JSON.stringify(userData), { expires: 1 });
-      setUsername(username);
+      setUser(user);
       setToken(auth_token);
       navigate("/");
     }

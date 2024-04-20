@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled, Box } from '@mui/material'
+import { styled, Box, Divider } from '@mui/material'
 
 //components
 import Chat from '../chat/Chat'
@@ -27,7 +27,7 @@ const MainContainer = styled(Box)`
 const LeftContainer = styled(Box)(({theme})=>({
     height: "95vh",
     width : "30vw",
-    backgroundColor : theme.palette.light
+    backgroundColor : theme.palette.secondary.main
 }))
 
 const RightContainer = styled(Box)(({theme})=>({
@@ -44,6 +44,7 @@ function Home() {
               <Header/>
               <TabContainer/>
             </LeftContainer>
+            <Divider orientation='vertical' flexItem />
             <RightContainer> <Chat/> </RightContainer>
         </MainContainer>
     </Container>

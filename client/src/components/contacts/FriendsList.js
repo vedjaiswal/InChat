@@ -19,56 +19,66 @@ import { DataContext } from "../../context/DataProvider";
 import { users } from "../data/users";
 
 function FriendsList() {
-
   const [ friends, setFriends ] = useState([]);
+  const [ selectedIndex, setSelectedIndex ] = useState(-1);
 
-  const { token } = useContext(DataContext);
+  const { token, setCurrentChat } = useContext(DataContext);
 
-  useEffect(()=>{
-    async function getFriends(token){
+  useEffect(() => {
+    async function getFriends(token) {
       // console.log("token : " + token);
-      let response = await getAllFriends(token)
+      let response = await getAllFriends(token);
       // console.log(response)
-      setFriends(response.data)
+      setFriends(response.data);
     }
-    if(token !== '') getFriends(token)
-  }, [token])
+    if (token !== "") getFriends(token);
+  }, [token]);
+
+  const handleListItemClick = (event, index, user) => {
+    setSelectedIndex(index);
+    setCurrentChat(user);
+  };
 
   return (
     <List
-    // component="nav"
-    // aria-labelledby="nested-list-subheader"
       sx={{
         width: "100%",
-        // bgcolor: 'secondary.dark'
       }}
     >
       {friends.map((user, index) => (
         <div key={index}>
-          <ListItem disablePadding alignItems="flex-start" style={{ cursor: "pointer" }}>
-            <ListItemButton>
-            <ListItemAvatar>
-              <Avatar alt="profile pic" src={user.imageUrl} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={user.friend}
-              secondary={
-                <Fragment>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="secondary.light"
-                  >
-                    {user.lastMessage}
-                  </Typography>
-                  {/* {" — I'll be in your neighborhood doing errands this…"} */}
-                </Fragment>
-              }
-            />
+          <ListItem
+            disablePadding
+            alignItems="flex-start"
+            style={{ cursor: "pointer" }}
+          >
+            <ListItemButton
+              selected={selectedIndex === index}
+              onClick={(event) => handleListItemClick(event, index, user)}
+            >
+              <ListItemAvatar>
+                <Avatar alt="profile pic" src={user.imageUrl} />
+              </ListItemAvatar>
+              <ListItemText
+                sx={{ color: "text.primary" }}
+                primary={user.friend}
+                secondary={
+                  <Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="primary.main"
+                    >
+                      {user.lastMessage}
+                    </Typography>
+                    {/* {" — I'll be in your neighborhood doing errands this…"} */}
+                  </Fragment>
+                }
+              />
             </ListItemButton>
           </ListItem>
-          <Divider component="li" />
+          <Divider sx={{ color: "primary" }} component="li" />
         </div>
       ))}
     </List>

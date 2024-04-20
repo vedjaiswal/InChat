@@ -1,23 +1,44 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { DataContext } from "../../context/DataProvider";
 import Cookies from "js-cookie";
 
+
+//socket
+import { io } from 'socket.io-client'
+ 
 //components
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
-import ChatInput from "./ChatInput";
 
 function Chat() {
   
   const [ currentFriend, setCurrentFriend ] = useState('');
+  const { currentChat, token } = useContext(DataContext);
+
+  const socket = useRef();
+  const host = "http://localhost:8000"
+
+
+  useEffect(()=>{
+    // console.log(currentChat)
+    if(currentChat){
+      setCurrentFriend(currentChat)
+      socket.current = io(host);
+      socket.current.emit("User:add", currentChat._id)
+    }
+  }, [currentChat])
 
   
   return (
+    <>
+    {Object.keys(currentFriend).length !== 0 ? 
     <div style={{ height : "100%"}}>
-      <ChatHeader/>
-      <ChatMessages/>
-      <ChatInput/>
+      <ChatHeader currentFriend={currentFriend} />
+      <ChatMessages currentFriend={currentFriend} token={token} socket={socket} />
     </div>
+    : <div>select a friend to chat</div>
+    }
+    </>
   );
 }
 

@@ -13,8 +13,8 @@ import { DataContext } from "../../context/DataProvider";
 
 const Container = styled(Box)(({ theme }) => ({
   display: "flex",
-  height: "8vh",
-  backgroundColor: theme.palette.secondary.main,
+  height: "8.8vh",
+  backgroundColor: theme.palette.primary.main,
   alignItems: "center",
   justifyContent: "space-between",
 }));
@@ -35,14 +35,16 @@ const ProfileText = styled(Typography)(({ theme }) => ({
 
 function Header() {
 
-  const { username } = useContext(DataContext);
+  const { user } = useContext(DataContext);
   const navigate = useNavigate();
 
   useEffect(()=>{
+    // console.log(user)
     const userCookie = Cookies.get("auth_token");
     if (!userCookie) {
       navigate('/login')
     }
+    // else console.log(JSON.parse(userCookie).user)
   }, [])
 
   return (
@@ -66,7 +68,7 @@ function Header() {
           alt="profile pic"
           src="https://cdn.dribbble.com/users/2987571/screenshots/7084912/luffy-01_4x.png"
         />
-        <ProfileText>{username}</ProfileText>
+        <ProfileText>{user.username}</ProfileText>
       </div>
       <div style={{ marginRight: 15 }}>
         <MenuDialog />

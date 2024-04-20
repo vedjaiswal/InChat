@@ -1,21 +1,29 @@
-import { createTheme } from "@mui/material";
+import { backdropClasses, createTheme } from "@mui/material";
 
 export const theme = createTheme({
     palette:{
         primary : {
-            main : "#be905e",
-            light : "#ffd60a",
-            dark : "#ffc300"
+            main : "#Cae0fe",
+            light : "#d5e6fe",
+            dark : "#8d9db2",
+            contrastText : "#111"
         },
         secondary : {
-            main : "#51555a",
-            light : "#5e5b52",
-            dark : "#424242"
+            main : "#0e1218",
+            light : "#1a1e27",
+            dark : "#080b0e",
+            contrastText : "#fff"
         },
-        // text : {
-        //     primary : "#be905e"
-        // },
+        text : {
+            primary : "#fff",
+            secondary : "#fff",
+            disabled : "#f2f2f2"
+        },
         dark : "#111111",
-        light : "#fdf8e1"
+        light : "#fdf8e1",
+        // divider : "#Cae0fe"
+        divider : {
+            background : "#fff"
+        }
     }
 })

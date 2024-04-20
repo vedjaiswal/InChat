@@ -5,25 +5,29 @@ import Cookies from "js-cookie";
 export const DataContext = createContext(null);
 
 function DataProvider({ children }) {
-  const [username, setUsername] = useState("");
+  const [user, setUser] = useState("");
   const [token, setToken] = useState("");
+  const [currentChat, setCurrentChat] = useState({});
 
   useEffect(() => {
     const userCookie = Cookies.get("auth_token");
     if (userCookie) {
       const user = JSON.parse(userCookie);
-      setUsername(user.username);
+      setUser(user.user);
       setToken(user.auth_token);
+      // console.log(user.user)
     }
 }, []);
 
   return (
     <DataContext.Provider
       value={{
-        username,
-        setUsername,
+        user,
+        setUser,
         token,
         setToken,
+        currentChat, 
+        setCurrentChat,
       }}
     >
       {children}

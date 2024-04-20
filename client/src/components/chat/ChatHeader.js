@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-function ChatHeader() {
+function ChatHeader({ currentFriend }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenu = (event) => {
@@ -25,10 +25,9 @@ function ChatHeader() {
     <div>
       <AppBar position="static">
         <Toolbar>
-          <Avatar>H</Avatar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {" "}
-            selected friend{" "}
+          <Avatar src={currentFriend.imageUrl} />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, marginLeft : 2 }}>
+            {currentFriend.friend}
           </Typography>
           <div>
             <IconButton

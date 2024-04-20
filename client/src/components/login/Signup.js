@@ -101,7 +101,7 @@ const StyledTextField = styled(TextField)(({ theme })=>({
 }));
 
 function Signup({ toggleLogin }) {
-  const { setToken, setUsername } = useContext(DataContext);
+  const { setToken, setUser } = useContext(DataContext);
 
   const [complete, setComplete] = useState(false);
   const [signUp, setSignUp] = useState({
@@ -123,16 +123,16 @@ function Signup({ toggleLogin }) {
   const handleSignUp = async()=>{
     try {
       const response = await authenticateSignupApi(signUp);
-      // console.log(response)
+      console.log(response)
       if(response.status === 200){
         const auth_token = response.data.auth_token;
-        const username = signUp.username      
+        const user = response.data.user;      
         const userData = {
-          username,
+          user,
           auth_token  
         }
         Cookies.set('auth_token', JSON.stringify(userData), { expires: 1 });
-        setUsername(username);
+        setUser(user);
         setToken(auth_token)
         setComplete(true)
       }

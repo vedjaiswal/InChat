@@ -12,13 +12,12 @@ import { DataContext } from '../../context/DataProvider';
 //utils
 import { stringShortner } from "../../utils/stringShortner";
 
-const SearchContainer = styled(Box)`
-    background : #fff;
-    // width : 38%;
-    border-radius : 2px;
-    margin-left : 10px;
-    display : flex;
-`
+const SearchContainer = styled(Box)(({ theme }) => ({
+  backgroundColor : theme.palette.secondary,
+  display: "flex",
+  borderRadius : 2,
+  marginLeft : 10,
+}));
 
 const StyledButton = styled(Button)({
     height: 25,
@@ -38,12 +37,13 @@ const SearchIconWrapper = styled(Box)`
     cursor : pointer;
 `;
 
-const ListWrapper = styled(List)`
-position: absolute;
-background: #FFFFFF;
-color: #000;
-margin-top: 36px;
-`
+const ListWrapper = styled(List)(({ theme }) => ({
+  position : "absolute",
+  marginTop : 36,
+  backgroundColor : theme.palette.secondary.light,
+  color : theme.palette.primary,
+  width : "29vw"
+}));
 
 function SearchFriend() {
 
@@ -87,11 +87,11 @@ function SearchFriend() {
       </SearchIconWrapper>
       {
           users.length !== 0 && 
-          <ListWrapper>
+          <ListWrapper >
               {
                   users.map(user => (
                     <>
-                    <ListItem disablePadding alignItems="flex-start" style={{ 
+                    <ListItem disablePadding  alignItems="flex-start" style={{ 
                       display : "flex",
                       padding : 8,
                       alignItems : "center",
@@ -100,6 +100,7 @@ function SearchFriend() {
                         <Avatar alt="profile pic" src={user.imageURL} />
                       </ListItemAvatar>
                       <ListItemText
+                        sx={{ color : "text.primary"}}
                         primary={user.username}
                         secondary={
                           <Fragment>
@@ -107,7 +108,7 @@ function SearchFriend() {
                               sx={{ display: "inline" }}
                               component="span"
                               variant="body2"
-                              color="secondary.light"
+                              color="primary.main"
                             >
                               {stringShortner(user.description)}
                             </Typography>

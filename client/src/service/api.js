@@ -70,7 +70,7 @@ export const getAllRequests = async(token) =>{
 
 export const requestAction = async(token, from, action)=>{
     try{
-        console.log("from : " + from + " action : " + action + " token : " + token);
+        // console.log("from : " + from + " action : " + action + " token : " + token);
         let response = await axios.post(`${URL}/requestAction`, {from : from, action : action}, {
             headers : {
                 auth_token : token
@@ -110,5 +110,36 @@ export const updateProfile = async(token, data)=>{
     }
     catch(error){
         console.log("error while updating Profile details : ", error);
+    }
+}
+
+export const getAllMessages = async(token, to) =>{
+    try{
+        let response = await axios.post(`${URL}/getAllMessages`, { to : to }, {
+            headers : {
+                auth_token : token
+            }
+        })
+        return response
+    }
+    catch(error){
+        console.log("error while getting all messages", error);
+        return error.message
+    }
+}
+
+export const addMessage = async(token, to, message) =>{
+    try{
+        let response = await axios.post(`${URL}/addMessages`, { to : to, message : message}, {
+            headers : {
+                auth_token : token
+            }
+        })
+        // console.log("sent message response : ",response)
+        return response;
+    }
+    catch(error){
+        console.log("error while adding message : ", error);
+        return error.response;
     }
 }

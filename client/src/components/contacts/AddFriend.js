@@ -37,7 +37,7 @@ function AddFriend() {
         <List
       sx={{
         width: "100%",        
-        // bgcolor: 'secondary.dark'
+        bgcolor: 'secondary.dark'
       }}
     >
       {request.length !== 0 ? 
@@ -63,7 +63,7 @@ function AddFriend() {
                     sx={{ display: "inline" }}
                     component="span"
                     variant="body2"
-                    color="secondary.light"
+                    color="secondary.main"
                   >
                     {stringShortner(req.description)}
                   </Typography>

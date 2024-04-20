@@ -76,6 +76,7 @@ function RequestList() {
               <Avatar alt="profile pic" src={req.imageUrl} />
             </ListItemAvatar>
             <ListItemText
+              sx={{ color : "text.primary"}}
               primary={req.fromUsername}
               secondary={
                 <Fragment>
@@ -83,7 +84,7 @@ function RequestList() {
                     sx={{ display: "inline" }}
                     component="span"
                     variant="body2"
-                    color="secondary.light"
+                    color="primary.main"
                   >
                     {stringShortner(req.description)}
                   </Typography>

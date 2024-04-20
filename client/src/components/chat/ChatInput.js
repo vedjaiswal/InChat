@@ -2,12 +2,26 @@ import React, { useState } from "react";
 import { FormControl, OutlinedInput, InputAdornment, IconButton } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 
-function ChatInput() {
+//api
+import { addMessage } from "../../service/api";
+
+function ChatInput( { currentFriend, token, socket, setMessages } ) {
 
     const [ message, setMessage ] = useState('')
 
-    const onSendMessage = (e) =>{
-        console.log(message);
+    const onSendMessage = async(e) =>{
+        // console.log(message);
+        let response = await addMessage(token, currentFriend.friendId, message);
+        socket.current.emit("Message:Send", {
+          to : currentFriend._id,
+          msg : message
+        })
+        // messages.push({ fromSelf : true, message : message })
+        // setMessages(messages);
+
+        setMessages((prev)=>  [ ...prev, { fromSelf : true, message : message } ])
+
+        // console.log(response)
         setMessage('')
     }
 
