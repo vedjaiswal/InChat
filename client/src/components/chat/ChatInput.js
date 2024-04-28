@@ -13,7 +13,7 @@ function ChatInput( { currentFriend, token, socket, setMessages } ) {
         // console.log(message);
         let response = await addMessage(token, currentFriend.friendId, message);
         socket.current.emit("Message:Send", {
-          to : currentFriend._id,
+          to : currentFriend.friendId,
           msg : message
         })
         // messages.push({ fromSelf : true, message : message })

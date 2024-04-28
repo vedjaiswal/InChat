@@ -22,14 +22,14 @@ function Chat() {
   useEffect(()=>{
     // console.log(currentChat)
     if(Object.keys(currentChat).length !== 0){
-      console.log(currentChat)
+      // console.log(currentChat)
       setCurrentFriend(currentChat)
       socket.current = io(host);
       socket.current.emit("User:add", token)
-      console.log("token : ")
-      console.log(token)
+      // console.log("token : ")
+      // console.log(token)
     }
-  }, [currentChat, token])
+  }, [currentChat])
 
   
   return (

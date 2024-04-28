@@ -1,8 +1,8 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Chip, Box, styled } from "@mui/material";
 
 const SendContainer = styled(Chip)({
-  borderRadius : "16px 0px 16px 16px",
+  borderRadius : "16px 16px 0px 16px",
 });
 
 const TextWraper = styled(Box)({
@@ -10,12 +10,12 @@ const TextWraper = styled(Box)({
     justifyContent : "flex-end"
 })
 
-function SendText({ text }) {
+const SendText = forwardRef(({ text }, ref) => {
   return (
-    <TextWraper>
+    <TextWraper ref={ref}>
       <SendContainer color="primary" label={text} />
     </TextWraper>
   );
-}
+})
 
 export default SendText;

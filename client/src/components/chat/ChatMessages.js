@@ -16,21 +16,30 @@ import BackgroundImage from './../../images/bg-image.png'
 // import { messages } from '../data/messages'
 
 
-const MessageContainer = styled(List)({
-    height : "80%",
-    display : "flex",
-    flexDirection : "column",
-    gap : '0.2rem',
-    padding : 5,
-    backgroundSize : "cover",
-})
+const MessageContainer = styled(List)`
+    height : 80%;
+    display : flex;
+    flex-direction : column;
+    gap : 0.2rem;
+    padding : 5px;
+    backgroundSize : cover;
+    overflow : auto;
+    &::-webkit-scrollbar {
+      width: 0.2rem;
+      &-thumb {
+        background-color: #Cae0fe;
+        width: 0.1rem;
+        border-radius: 1rem;
+      }
+    }    
+`
 
 function ChatMessages({ currentFriend, token, socket}) {
 
   const [ messages, setMessages ] = useState([]);
   const [ arrivalMessage, setArrivalMessage ] = useState(null);
 
-  const scrollRef = useRef();
+  const scrollRef = useRef(null);
 
   useEffect(()=>{
     async function getMessages() {
@@ -56,14 +65,16 @@ function ChatMessages({ currentFriend, token, socket}) {
   }, [arrivalMessage])
 
   useEffect(()=>{
-    scrollRef.current?.scrollIntoView({ behavior : "smooth" })
+    // console.log(scrollRef.current)
+
+    scrollRef.current?.scrollIntoView({ behavior : "smooth", block : "center", inline : "end" })
   }, [messages])
 
   return (
     <>
-    <MessageContainer ref={scrollRef} style={{backgroundImage : `url(${BackgroundImage})`}}>
+    <MessageContainer  style={{backgroundImage : `url(${BackgroundImage})`}}>
       {messages.map((msg, index) => (
-        msg.fromSelf ? <SendText text={msg.message} /> : <ReceiveText text={msg.message} />
+        msg.fromSelf ? <SendText ref={scrollRef} text={msg.message} /> : <ReceiveText ref={scrollRef} text={msg.message} />
       ))}
     </MessageContainer>
     <ChatInput currentFriend={currentFriend} token={token} socket={socket} setMessages={setMessages} />
