@@ -2,7 +2,7 @@ import express from  'express';
 import { fetchuser } from '../middleware/fetchUser.js'
 import {getUser, profileUpdate, searchUser, userLogIn,userSignUp} from '../controller/user_controller.js';
 import { sendRequest,showSentRequest,showReceivedRequest,requestAction, getAllFriends } from '../controller/requests_controller.js';
-import { addMessages, getAllMessages } from '../controller/message_controller.js';
+import { addMessages, getAllMessages, readMessage } from '../controller/message_controller.js';
 const router = express.Router();    
 
 router.post('/signup', userSignUp);
@@ -21,5 +21,6 @@ router.get('/getAllFriends',fetchuser,getAllFriends);
 
 router.post('/addMessages',fetchuser,addMessages);
 router.post('/getAllMessages',fetchuser,getAllMessages);
+router.post('/readMessage',fetchuser,readMessage);
 
 export default router;

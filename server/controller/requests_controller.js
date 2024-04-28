@@ -1,6 +1,6 @@
-import Requests from "../model/Request.js";
+import Requests from "../model/RequestSchema.js";
 import User from "../model/UserSchema.js";
-import Friends from "../model/friends.js";
+import Friends from "../model/FriendsSchema.js";
 
 export const sendRequest = async (req,res) => {
     try {
