@@ -47,6 +47,7 @@ export const getAllMessages = async (req, res) => {
             return {
               fromSelf: msg.sender.toString() === from,
               message: msg.message.text,
+              seen : msg.seen,
             };
           });
         
